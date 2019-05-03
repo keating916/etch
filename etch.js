@@ -1,7 +1,12 @@
 let container = document.getElementById("container"); //get container element for grid
  // create div element for grid
-container.style.cssText = "display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(16, 1fr); height: 100vh; width: auto;";
-generateDivs(16)
+ let v = 16;
+let header = document.getElementById('header');
+header.style= "display: flex; width: 400px;;"
+container.style.cssText = `display: grid; grid-template-columns: repeat(${v}, 1fr); grid-template-rows: repeat(${v}, 1fr); height: 400px; width: 400px; border: 1px solid black; padding: auto;`;
+let button = document.getElementById('clear')
+button.style.height = "auto"; 
+generateDivs(v)
 function colorGenerator() {
     let color ='#'+Math.floor(Math.random()*16777215).toString(16);
     return color
@@ -9,17 +14,29 @@ function colorGenerator() {
 function generateDivs(x) {
     for(let i=0; i<x**2; i++) {
         let grid = document.createElement("div");
-        grid.style = `border: 1px solid black;`
+        grid.style = `background-color: white`
         grid.className = "gridItems";
+        grid.id = i;
         container.appendChild(grid)
     }
 }
-function changeColor(item) {
+function changeColor() {
     let color = colorGenerator()
-    item.style= `background-color = ${color}`;
+    return color;
 }
-let gridItems = document.getElementsByClassName("gridItems");
-for(let i = 0; i <gridItems.length; i++) {
-    gridItems[i].addEventListener('click', e => {
-        console.log("Clicked index: " + i);
-}
+let totalGrid = document.getElementsByClassName("gridItems");
+for(let i = 0; i < totalGrid.length; i++) {
+    let item = document.getElementById(`${i}`);
+    item.addEventListener("mouseover", function() {
+        item.style = `background-color: ${changeColor()}`
+    })
+};
+button.addEventListener('click', e => {
+    let input = prompt("How many squares would you like across?")
+    v=input;
+    for(let i = 0; i < totalGrid.length; i++) {
+        let item = document.getElementById(`${i}`)
+        document.removeChild(container);
+    }
+    generateDivs(v);
+})
